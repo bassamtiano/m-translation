@@ -7,7 +7,7 @@ import gzip
 import tensorflow.python.platform import gfile
 
 def download(directory, filename, url):
-    
+    print("test")
 
 def get_train_set(dir):
     train_path = os.path.join(dir, "train")
