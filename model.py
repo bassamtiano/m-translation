@@ -112,6 +112,13 @@ def create_transformer_model():
         final_output = reshape_from_matrix(prev_output, input_shape)
         return final_output
 
+def get_shape_list(tensor, expected_rank=None, name=None):
+    if name is None:
+        name = tensor.name
+
+    if expected_rank is None:
+        assert_rank(tensor, expected_rank, name)
+
 def reshape_to_matrix(input_tensor):
     ndims = input_tensor.shape.ndims
     if ndims < 2:
@@ -133,11 +140,3 @@ def reshape_from_matrix(output_tensor, orig_shape_list):
     return tf.reshape(output_tensor, orig_dims + [width])
 
 def assert_rank(tensor, expected_rank, name=None):
-    
-
-def get_shape_list(tensor, expected_rank=None, name=None):
-    if name is None:
-        name = tensor.name
-
-    if expected_rank is None:
-        assert_rank(tensor, expected_rank, name)
