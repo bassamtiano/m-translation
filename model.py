@@ -8,7 +8,7 @@ import tensorflow.python.ops.math_ops import tanh
 
 def get_optimizer(opt):
 
-class MTranslationModel(object):
+class TransformerModel(object):
     def __init__():
 
     def init_encoder(self):
@@ -16,10 +16,30 @@ class MTranslationModel(object):
     def init_decoder(self):
 
     def encode():
+        with tf.variable_scope("encoder", reuse=tf.AUTO_REFUSE):
+            x, seqlens, sentsl = xs
+
+            # embedding
+
+            enc = tf.nn.embedding_lookup(self.embedding_lookup, x)
+
+            # Transformer perform sum residuals on all layers
+            if (input_width != hidden_size):
+                raise ValueError()
+
+            reshape_to_matrix(input_tensor)
+            all_layer_outputs = []
+
+            for layer_idx in range (num_hidden_layers):
+                with tf.variable_scope("layer_%d")
+
+
+
 
     def decode():
 
-def attention_later():
+
+def attention_layer():
 
 
 def create_transformer_model():
@@ -111,3 +131,13 @@ def reshape_from_matrix(output_tensor, orig_shape_list):
     width = output_shape[-1]
 
     return tf.reshape(output_tensor, orig_dims + [width])
+
+def assert_rank(tensor, expected_rank, name=None):
+    
+
+def get_shape_list(tensor, expected_rank=None, name=None):
+    if name is None:
+        name = tensor.name
+
+    if expected_rank is None:
+        assert_rank(tensor, expected_rank, name)
