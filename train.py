@@ -16,6 +16,9 @@ import tokenizer
 import tensorflow as tf
 
 
+def extract_file():
+    
+
 def train():
     print("test")
     bassam = tokenizer.converts_to_unicode("Test text with different")
@@ -26,7 +29,7 @@ def main(_):
     tf.logging.set_verbosity(tf.logging.INFO)
 
     bert_config = modeling.BertConfig.from_json_file(FLAGS.bert_config_file)
-     
+
 
     train()
 
