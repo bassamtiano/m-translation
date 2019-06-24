@@ -3,17 +3,12 @@ import random
 import numpy as np
 import tensorflow as tf
 
-import tensorflow.python.ops.math_ops import sigmoid
-import tensorflow.python.ops.math_ops import tanh
+from tensorflow.python.ops.math_ops import sigmoid
+from tensorflow.python.ops.math_ops import tanh
 
-def get_optimizer(opt):
 
 class TransformerModel(object):
-    def __init__():
 
-    def init_encoder(self):
-
-    def init_decoder(self):
 
     def encode():
         with tf.variable_scope("encoder", reuse=tf.AUTO_REFUSE):
@@ -39,23 +34,63 @@ class TransformerModel(object):
     def decode():
 
 
-def attention_layer():
+def attention_layer(form_tensor,
+                    to_tensor,
+                    attention_mask = None,
+                    num_attention_heads = 1
+                    size_per_head=512
+                    query_act=None
+                    key_act=None
+                     ):
+    def transpose_for_scores():
+        output_tensor = tf.reshape(
+            input_tensor, [batch_size, seq_length, num_attention_heads, width])
+
+        output_tensor = tf.transpose(output_tensor, [0, 2, 1, 3])
+        return output_tensor
+
+    from_shape = get_shape_list(from_tensor, expected_rank=[2, 3])
+    to_shape = get_shape_list(to_tensor, expected_rank=[2, 3])
+
+    if len(from_shape) != len(to_shape):
+        raise ValueError(
+
+        )
+
+    if len(from_shape) == 3:
+        batch_size = from_shape[0]
+        from_seq_length = from_shape[1]
+        to_seq_length = to_shape[2]
+
+    elif len(from_shape) == 2:
+        if(batch_size is None or from_seq_length is None or to_seq_length is None):
+            raise ValueError(
+                ""
+            )
 
 
 def create_transformer_model():
 
+    # Confirm the Hidden Size
+
     if hidden_size % num_attention_heads != 0:
         raise ValueError(
-
+            "The hidden Size (%d) is not a multiple of the number of attention"
+            "heads (%d)" % (hidden_size, num_attention_heads)
         )
 
-    attention_size = int(hidden_size / num_attention_heads)
+    attention_head_size = int(hidden_size / num_attention_heads)
     input_shape = get_shape_list(input_tensor, expected_rank)
+    batch_size = input_shape[0]
+    seq_length = input_shape[1]
+    input_width = input_shape[2]
 
     if input_width != hidden_size:
         raise ValueError(
-
+            "The width of the input tensor (%d) != hidden_size (%d)" %
+            (input_width, hidden_size)
         )
+
 
     all_layer_outputs = []
     for layer_idx in range(num_hidden_layers):
