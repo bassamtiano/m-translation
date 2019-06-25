@@ -23,7 +23,7 @@ def create_token(paragraph):
 
 
     # remove punktuation symbols
-    paragraph = " ".join(regex_tokenizer.tokenize(paragraph))
+    # paragraph = " ".join(regex_tokenizer.tokenize(paragraph))
     paragraph = paragraph[1:]
     paragraph = paragraph[:-2]
     return paragraph
