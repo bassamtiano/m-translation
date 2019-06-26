@@ -3,6 +3,14 @@ import random
 import numpy as np
 import tensorflow as tf
 
+import collections
+import json
+import random
+import re
+
+
+
+
 from tensorflow.python.ops.math_ops import sigmoid
 from tensorflow.python.ops.math_ops import tanh
 
@@ -27,9 +35,6 @@ class TransformerModel(object):
 
             for layer_idx in range (num_hidden_layers):
                 with tf.variable_scope("layer_%d")
-
-
-
 
     def decode():
 
@@ -69,9 +74,9 @@ def attention_layer(form_tensor,
             )
 
 
-def create_transformer_model():
+def create_transformer_model(input_tensor):
 
-    # Confirm the Hidden Size
+    # Confirm the Hidden-Layer Size
 
     if hidden_size % num_attention_heads != 0:
         raise ValueError(

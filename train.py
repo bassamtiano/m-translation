@@ -7,22 +7,24 @@ import sys
 import json
 
 import datetime
-import json
 
 # import modeling
 import tokenizer
+import nltk
+import random
+import logging
+
 # import optimization
 # import tokenization
 import tensorflow as tf
 
 
 def extract_file():
-    
+
 
 def train():
-    print("test")
-    bassam = tokenizer.converts_to_unicode("Test text with different")
-    print(bassam)
+    # Preparing The Data setting
+
 
 
 def main(_):

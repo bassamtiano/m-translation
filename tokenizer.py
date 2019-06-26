@@ -58,7 +58,7 @@ def printable_text(text):
   else:
     raise ValueError("Not running on Python2 or Python 3?")
 
-
+    
 def load_vocab(vocab_file):
   """Loads a vocabulary file into a dictionary."""
   vocab = collections.OrderedDict()
@@ -244,7 +244,7 @@ def _is_punctuation(char):
     if ((cp >= 33 and cp <= 47) or (cp >= 58 and cp <=64) or
         (cp >= 91 and cp <= 96) or (cp >= 123 and cp <= 126)):
         return True
-        
+
     cat = unicodedata.category(char)
     if cat.startswith("P"):
         return True
