@@ -4,21 +4,76 @@ import collections
 import re
 import unicodedata
 import six
+import multiprocessing
+import sys
+
+import nltk
+import argparse
 
 import tensorflow as tf
 
-class BasicTokenizer():
+SEGMENTER = None
 
-    def __init__(do_lower_case=True):
-        self.do_lower_case = do_lower_case
+THREADS = 16
+CHUNKSIZE = 16
 
-    def tokenize(self, text):
-        text = self.convert_to_unicode(text)
+def main():
+    args = parse_args()
+    nltk.data.path.append("./data/release3.3/data/nucle3.2.sgml")
 
-    def convert_to_unicode():
+    global NORMALIZE_QUOTES, SEGMENTER
+    NORMALIZE_QUOTES = args.change_quotes
 
-    def _is_whitespace():
-        
+    if args.split_lines:
+        SEGMENTER = nltk.data.load("tokenizers/punkt/{}.pickle".format(
+            args.language))
+        func = nltk_segmentize
+    else:
+        func = nltk_tokenize
 
-    def _clean_text(self, text):
-        output = []
+    pool = multiprocessing.Pool(args.jobs)
+    for result in pool.imap(nltk_tokenize, sys.stdin, chunksize=CHUNKSIZE):
+        print(result)
+    pool.close()
+    pool.join()
+
+def nltk_segmentize(line, change_quotes=False):
+    sents = []
+    for sent in segmenter.tokenize(line.lstrip()):
+        sents.append(nltk_tokenize(sent, change_quotes))
+    return "\n".join(sents)
+
+
+def nltk_tokenize(line, change_quotes=False):
+    toks = " ".join(nltk.word_tokenize(line.strip()))
+    if not change_quotes:
+        toks = toks.replace("``", '"').replace("''", '"')
+    return toks
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-l",
+        "--language",
+        help="language, default: english",
+        default="english")
+    parser.add_argument(
+        "-q",
+        "--change-quotes",
+        help="replace \"*\" with ``*''",
+        action="store_true")
+    parser.add_argument(
+        "-s",
+        "--split-lines",
+        help="more than one sentence per line is possible",
+        action="store_true")
+    parser.add_argument(
+        "-j",
+        "--jobs",
+        help="number of parallel jobs, default: 16",
+        type=int,
+        default=THREADS)
+    return parser.parse_args()
+
+if __name__ == "__main__":
+    main()

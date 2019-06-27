@@ -3,3 +3,7 @@ __pycache__
 data/
 result.json
 m2scorer.py
+
+resultm2.json
+resultm2.txt
+test.json

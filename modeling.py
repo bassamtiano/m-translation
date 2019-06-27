@@ -8,12 +8,8 @@ import json
 import random
 import re
 
-
-
-
 from tensorflow.python.ops.math_ops import sigmoid
 from tensorflow.python.ops.math_ops import tanh
-
 
 class TransformerModel(object):
 
