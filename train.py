@@ -21,7 +21,6 @@ import tensorflow as tf
 
 def extract_file():
 
-
 def train():
     # Preparing The Data setting
 
@@ -34,6 +33,13 @@ def main(_):
 
 
     train()
+
+    n_token = corpus_info["vocab_size"]
+    cutoffs = corpus_info["cuttofs"][1:-1]
+
+    if FLAGS.do_train:
+
+    if FLAGS.do_eval:
 
     # estimator = tf.contrib.tpi.TPUEstimator(
     #     use_tpu=FLAGS.use_tpu,

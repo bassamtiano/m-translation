@@ -30,7 +30,6 @@ regex_tokenizer = nltk.RegexpTokenizer("\w+")
 
 
 
-
 def create_token(paragraph):
     # paragraph = str(paragraph).lower()
     paragraph = str(paragraph)
