@@ -17,90 +17,29 @@ import tensorflow as tf
 from nltk.corpus import state_union
 from bs4 import BeautifulSoup
 
-# flags = tf.flags
-#
-# FLAGS = tf.FLAGS
-#
-# flags.DEFINE_string("input_file", None, "Input Raw Text")
-#
-# flags.DEFINE_string("output_file", None, "Output Example File")
-#
-# flags.DEFINE_string("vocab_file", None, "Vocab File")
+from vocab import Vocab
 
-regex_tokenizer = nltk.RegexpTokenizer("\w+")
 
-def create_token(paragraph):
-    # paragraph = str(paragraph).lower()
-    paragraph = str(paragraph)
-    paragraph = paragraph.encode("utf-8", "ignore").decode()
+class Corpus(object):
+    def __init__(self):
+        self.vocab = Vocab()
 
-    paragraph = paragraph[4:]
-    paragraph = paragraph[:-5]
-    paragraph = nltk.sent_tokenize(paragraph)
+        # Training Datasets
+        self.vocab.count_file(os.path.join("resultm2.txt"))
 
-    token_result = []
-    for sentence in paragraph:
-        r = word_tokenize(sentence)
-        token_result.append(r)
-    # return paragraph
-    return token_result
+        # Fixed Datasets
 
-def word_tokenize(paragraphs):
-    sentences = nltk.sent_tokenize(paragraphs)
+        # Test Datasets
 
-    result = []
-    for sentence in sentences:
-        tokenized_text = nltk.word_tokenize(sentence)
-        tagged = nltk.pos_tag(tokenized_text)
-        result.append(tokenized_text)
-    return result
+        self.vocab.build_vocab()
 
-def to_json(data_m2):
-    result = []
-    for sentence in data_m2:
-        if sentence[0][0] == "S":
-            sentence = sentence[2:]
-            sentence = sentence[:-1]
-            result.append(sentence)
+        self.train = self.vocab.encode_file(os.path.join("resultm2.txt"), ordered = True)
 
-    with open("resultm2.json", "w") as outfile:
-        json.dump(result, outfile)
+        self.cutoffs = []
 
-def to_txt(data_m2):
-    f = open("resultm2.txt", "w+")
-    for sentence in data_m2:
-        if sentence[0][0] == "S":
-            sentence = sentence[2:]
-            f.write(sentence)
 
-def read_m2():
-    with open("data/release3.3/bea2019/nucle.train.gold.bea19.m2") as fp:
-        data_m2 = fp.readlines()
-    to_txt(data_m2)
+def main(unused_argv):
+    
 
-def main():
-    with open("data/release3.3/data/nucle3.2.sgml") as fp:
-        soup = BeautifulSoup(fp, "lxml")
 
-    result = []
-
-    article_text = ''
-    article = soup.findAll('p')
-    for elements in article:
-        tokenize = create_token(elements.findAll(text = True))
-        result.append(tokenize)
-
-    # print(json.dumps(result, indent=4))
-    with open("result.json", "w") as outfile:
-        json.dump(result, outfile)
-
-def test():
-    result = word_tokenize("Ask a new question about the step that's giving you encoding problems, and you'll learn how to specify the file encoding when processing unicode.")
-    with open("test.json", "w") as outfile:
-        json.dump(result, outfile)
-
-tokenize_m2()
-# if __name__ == "__main__":
-#     FLAGS = flags.FLAGS
-#     flgas.DEFINE_string("data_dir" , None, )
-#     tf.app.run(main)
+Corpus()
