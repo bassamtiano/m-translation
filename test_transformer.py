@@ -25,7 +25,7 @@ with open("fixed.txt") as fpf:
 
 
 # sentences = [sentences_source, sentences_fixed, sentences_fixed]
-sentences = ['The solution can be obtain by using technology to achieve a better', 'The solution can be obtained by using technology to achieve better', 'The solution can be obtained by using technology to achieve better']
+sentences = ['The solution can be obtain by using technology to achieve a better P', 'S The solution can be obtained by using technology to achieve better', 'The solution can be obtained by using technology to achieve better E']
 
 # Transformer Parameters
 # Padding Should be Zero
@@ -34,19 +34,19 @@ sentences = ['The solution can be obtain by using technology to achieve a better
 #     src_vocab = json.load(source_json_file)
 
 # src_vocab = {'P' : 0, 'ich' : 1, 'mochte' : 2, 'ein' : 3, 'bier' : 4}
-src_vocab = { 'The' : 0, 'solution' : 1, 'can' : 2, 'be' : 3, 'obtain' : 4, 'by' : 5, 'using' : 6, 'technology' : 7, 'to' : 8, 'achieve' : 9, 'a' : 10, 'better' : 11 }
+src_vocab = { 'P' : 0, 'The' : 1, 'solution' : 2, 'can' : 3, 'be' : 4, 'obtain' : 5, 'by' : 6, 'using' : 7, 'technology' : 8, 'to' : 9, 'achieve' : 10, 'a' : 11, 'better' : 12 }
 src_vocab_size = len(src_vocab)
 
 # with open('fixed.json') as target_json_file:
 #     tgt_vocab = json.load(target_json_file)
 
 # tgt_vocab = {'P' : 0, 'i' : 1, 'want' : 2, 'a' : 3, 'beer' : 4, 'S' : 5, 'E' : 6}
-tgt_vocab = { 'The' : 0, 'solution' : 1, 'can' : 2, 'be' : 3, 'obtained' : 4, 'by' : 5, 'using' : 6, 'technology' : 7, 'to' : 8, 'achieve' : 9, 'better' : 10 }
+tgt_vocab = { 'P' : 0, 'The' : 1, 'solution' : 2, 'can' : 3, 'be' : 4, 'obtained' : 5, 'by' : 6, 'using' : 7, 'technology' : 8, 'to' : 9, 'achieve' : 10, 'better' : 11, 'S' : 12, 'E' : 13 }
 number_dict = {i: w for i, w in enumerate(tgt_vocab)}
 tgt_vocab_size = len(tgt_vocab)
 
-src_len = 12
-tgt_len = 11
+src_len = 10
+tgt_len = 10
 
 d_model = 512  # Embedding Size
 d_ff = 2048 # FeedForward dimension
@@ -161,7 +161,7 @@ class Encoder(nn.Module):
         self.layers = nn.ModuleList([EncoderLayer() for _ in range(n_layers)])
 
     def forward(self, enc_inputs): # enc_inputs : [batch_size x source_len]
-        enc_outputs = self.src_emb(enc_inputs) + self.pos_emb(torch.LongTensor([[1,2,3,4,0]]))
+        enc_outputs = self.src_emb(enc_inputs) + self.pos_emb(torch.LongTensor([[1,2,3,4,5,6,7,8,9,10,11,12,0]]))
         enc_self_attn_mask = get_attn_pad_mask(enc_inputs, enc_inputs)
         enc_self_attns = []
         for layer in self.layers:
@@ -177,7 +177,7 @@ class Decoder(nn.Module):
         self.layers = nn.ModuleList([DecoderLayer() for _ in range(n_layers)])
 
     def forward(self, dec_inputs, enc_inputs, enc_outputs): # dec_inputs : [batch_size x target_len]
-        dec_outputs = self.tgt_emb(dec_inputs) + self.pos_emb(torch.LongTensor([[5,1,2,3,4]]))
+        dec_outputs = self.tgt_emb(dec_inputs) + self.pos_emb(torch.LongTensor([[12,1,2,3,4,5,6,7,8,9,10,11]]))
         dec_self_attn_pad_mask = get_attn_pad_mask(dec_inputs, dec_inputs)
         dec_self_attn_subsequent_mask = get_attn_subsequent_mask(dec_inputs)
         dec_self_attn_mask = torch.gt((dec_self_attn_pad_mask + dec_self_attn_subsequent_mask), 0)
